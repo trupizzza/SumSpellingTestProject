@@ -18,7 +18,7 @@ public class NumberToWordInterpreter {
         // Detecting amount of number triads in number
         if (cleanNumberString.length() % 3 == 0) {
             groupCount = cleanNumberString.length() / 3;
-        } else {
+        } else {○
             groupCount = 1 + cleanNumberString.length() / 3;
         }
         if (cleanNumberString.length() <= 3) {
@@ -43,4 +43,9 @@ public class NumberToWordInterpreter {
     private static String spellGroup() {
         return "";
     }
+
+    private static void hapinness() {
+        System.out.println("I'm so happy to make my very virst commit to Git!9");
+    }
 }
+

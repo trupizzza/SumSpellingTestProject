@@ -5,6 +5,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -21,16 +22,20 @@ public class SumSpellingTest {
     private int tenNumber;
     private int fourteenNumber;
     private int thirtyFiveNumber;
+    private int[] oneToNineNumbersArray;
+    private String[] expectedSpelledNumbers;
+    private int twentyFourNumber;
 
     @Before
     public void setUp() {
-
+        expectedSpelledNumbers = new String[]{"one", "two", "three"};
+        oneToNineNumbersArray = new int[]{1, 2, 3};
         fiveNumber = 5;
         oneNumber = 1;
         tenNumber = 10;
         fourteenNumber = 14;
         thirtyFiveNumber = 35;
-
+        twentyFourNumber = 24;
     }
 
     @After
@@ -61,5 +66,19 @@ public class SumSpellingTest {
     @Test
     public void shouldTranslateThirtyFiveNumberToWord() {
         assertEquals("thirty five", NumberToWordInterpreter.translate(thirtyFiveNumber));
+    }
+
+    @Test
+    public void shouldTranslateAnyGivenLengthOneNumberToWord() {
+        String[] actualWords = new String[expectedSpelledNumbers.length];
+        for (int i = 0; i < expectedSpelledNumbers.length; i++) {
+            actualWords[i] = NumberToWordInterpreter.translate(oneToNineNumbersArray[i]);
+        }
+        assertArrayEquals(expectedSpelledNumbers, actualWords);
+    }
+
+    @Test
+    public void shouldTranslateGivenLengthTwoNumberToWord() {
+        assertEquals("twenty four", NumberToWordInterpreter.translate(twentyFourNumber));
     }
 }

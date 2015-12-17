@@ -29,8 +29,9 @@ public class NumberToWordInterpreter {
                 case 1:
                     return checkFirstNumber(separatedNumberGroupsStrings[length]);
                 case 2:
-                    return checkSecondNumber(separatedNumberGroupsStrings[length]) + checkFirstNumber(separatedNumberGroupsStrings[length].substring(1));
+                    return checkSecondNumber(separatedNumberGroupsStrings[length]);
                 case 3:
+                    return checkFirstNumber(separatedNumberGroupsStrings[length]) + "hundred " + checkSecondNumber(separatedNumberGroupsStrings[length].substring(1));
                 default:
                     return "";
             }
@@ -45,34 +46,34 @@ public class NumberToWordInterpreter {
         if (integerNumber < 20) {
             switch (integerNumber) {
                 case 10:
-                    resultingWord = "ten";
+                    resultingWord = "ten ";
                     break;
                 case 11:
-                    resultingWord = "eleven";
+                    resultingWord = "eleven ";
                     break;
                 case 12:
-                    resultingWord = "twelve";
+                    resultingWord = "twelve ";
                     break;
                 case 13:
-                    resultingWord = "thirteen";
+                    resultingWord = "thirteen ";
                     break;
                 case 14:
-                    resultingWord = "fourteen";
+                    resultingWord = "fourteen ";
                     break;
                 case 15:
-                    resultingWord = "fifteen";
+                    resultingWord = "fifteen ";
                     break;
                 case 16:
-                    resultingWord = "sixteen";
+                    resultingWord = "sixteen ";
                     break;
                 case 17:
-                    resultingWord = "seventeen";
+                    resultingWord = "seventeen ";
                     break;
                 case 18:
-                    resultingWord = "eighteen";
+                    resultingWord = "eighteen ";
                     break;
                 case 19:
-                    resultingWord = "nineteen";
+                    resultingWord = "nineteen ";
                     break;
                 default:
                     resultingWord = "Translation error!";
@@ -117,32 +118,34 @@ public class NumberToWordInterpreter {
         String resultingWord;
         switch (numberString.charAt(0)) {
             case '1':
-                resultingWord = "one";
+                resultingWord = "one ";
                 break;
             case '2':
-                resultingWord = "two";
+                resultingWord = "two ";
                 break;
             case '3':
-                resultingWord = "three";
+                resultingWord = "three ";
                 break;
             case '4':
-                resultingWord = "four";
+                resultingWord = "four ";
                 break;
             case '5':
-                resultingWord = "five";
+                resultingWord = "five ";
                 break;
             case '6':
-                resultingWord = "six";
+                resultingWord = "six ";
                 break;
             case '7':
-                resultingWord = "seven";
+                resultingWord = "seven ";
                 break;
             case '8':
-                resultingWord = "eight";
+                resultingWord = "eight ";
                 break;
             case '9':
-                resultingWord = "nine";
+                resultingWord = "nine ";
                 break;
+            case '0':
+                resultingWord = "";
             default:
                 return "Translation error!";
         }

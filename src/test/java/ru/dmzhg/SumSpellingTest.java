@@ -5,7 +5,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -45,40 +44,36 @@ public class SumSpellingTest {
 
     @Test
     public void shouldTranslateNumberFiveToWord() {
-        assertEquals("five", NumberToWordInterpreter.translate(fiveNumber));
+        assertEquals("five ", NumberToWordInterpreter.translate(fiveNumber));
     }
 
     @Test
     public void shouldTranslateNumberOneToWord() {
-        assertEquals("one", NumberToWordInterpreter.translate(oneNumber));
+        assertEquals("one ", NumberToWordInterpreter.translate(oneNumber));
     }
 
     @Test
     public void shouldTranslateNumberTenToWord() {
-        assertEquals("ten", NumberToWordInterpreter.translate(tenNumber));
+        assertEquals("ten ", NumberToWordInterpreter.translate(tenNumber));
     }
 
     @Test
     public void shouldTranslateNumberFourteenToWord() {
-        assertEquals("fourteen", NumberToWordInterpreter.translate(fourteenNumber));
+        assertEquals("fourteen ", NumberToWordInterpreter.translate(fourteenNumber));
     }
 
     @Test
     public void shouldTranslateThirtyFiveNumberToWord() {
-        assertEquals("thirty five", NumberToWordInterpreter.translate(thirtyFiveNumber));
-    }
-
-    @Test
-    public void shouldTranslateAnyGivenLengthOneNumberToWord() {
-        String[] actualWords = new String[expectedSpelledNumbers.length];
-        for (int i = 0; i < expectedSpelledNumbers.length; i++) {
-            actualWords[i] = NumberToWordInterpreter.translate(oneToNineNumbersArray[i]);
-        }
-        assertArrayEquals(expectedSpelledNumbers, actualWords);
+        assertEquals("thirty five ", NumberToWordInterpreter.translate(thirtyFiveNumber));
     }
 
     @Test
     public void shouldTranslateGivenLengthTwoNumberToWord() {
-        assertEquals("twenty four", NumberToWordInterpreter.translate(twentyFourNumber));
+        assertEquals("twenty four ", NumberToWordInterpreter.translate(twentyFourNumber));
+    }
+
+    @Test
+    public void shouldTranslateLengthThreeNumberToWord() {
+        assertEquals("one hundred twenty four ", NumberToWordInterpreter.translate(124));
     }
 }

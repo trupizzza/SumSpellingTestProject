@@ -25,7 +25,7 @@ public class NumberToWordInterpreter {
             } else {
                 separatedNumberGroupsStrings[i] = numberString.substring(numberString.length() - 3, numberString.length());
             }
-            switch (separatedNumberGroupsStrings[separatedNumberGroupsStrings.length].length()) {
+            switch (separatedNumberGroupsStrings[separatedNumberGroupsStrings.length - 1].length()) {
                 case 1:
                     return checkFirstNumber(separatedNumberGroupsStrings[length]);
                 case 2:
@@ -42,10 +42,7 @@ public class NumberToWordInterpreter {
     private static String checkSecondNumber(String numberString) {
         String resultingWord = "";
         int integerNumber = Integer.valueOf(numberString);
-        if (integerNumber > 20) {
-            switch (integerNumber) {
-                case
-            }
+        if (integerNumber < 20) {
             switch (integerNumber) {
                 case 10:
                     resultingWord = "ten";
@@ -77,15 +74,44 @@ public class NumberToWordInterpreter {
                 case 19:
                     resultingWord = "nineteen";
                     break;
-                case 20:
-                    resultingWord = "twenty";
-                    break;
                 default:
                     resultingWord = "Translation error!";
                     break;
             }
             return resultingWord;
+        } else {
+            switch (numberString.charAt(0)) {
+                case '2':
+                    resultingWord = "twenty ";
+                    break;
+                case '3':
+                    resultingWord = "thirty ";
+                    break;
+                case '4':
+                    resultingWord = "forty ";
+                    break;
+                case '5':
+                    resultingWord = "fifty ";
+                    break;
+                case '6':
+                    resultingWord = "sixty ";
+                    break;
+                case '7':
+                    resultingWord = "seventy ";
+                    break;
+                case '8':
+                    resultingWord = "eighty ";
+                    break;
+                case '9':
+                    resultingWord = "ninety ";
+                    break;
+                default:
+                    return "Translation error!";
+            }
+            resultingWord += checkFirstNumber(numberString.substring(1));
         }
+        return resultingWord;
+    }
 
     public static String checkFirstNumber(String numberString) {
         String resultingWord;

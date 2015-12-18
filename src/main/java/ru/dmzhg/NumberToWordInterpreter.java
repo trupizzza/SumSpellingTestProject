@@ -4,50 +4,52 @@ package main.java.ru.dmzhg;
  * Created by DMZHG on 11.12.2015.
  */
 public class NumberToWordInterpreter {
-
     private static String[] triadDefinition = new String[]{"", "thousand ", "million ", "billion "};
 
-
-    public static String translate(final int number) {
+    public static String translate(Double number) {
         String completeNumberWordResult = "";
-        int length = 0;
-        int numberLength = 0;
+        int intNumberLength = 0;
         int groupCount = 0;
         String[] separatedNumberGroupsStrings;
-        numberLength = Integer.toString(number).length();
-
-
-        if (numberLength % 3 == 0) {
-            groupCount = numberLength / 3;
+        String numberString = number.toString();
+        String intNumberString = Integer.toString(number.intValue());
+        intNumberLength = Integer.toString(number.intValue()).length();
+        String decimalString = String.valueOf(Integer.parseInt(numberString.split("\\.")[0]));
+        String fractionalString = String.valueOf(Integer.parseInt(numberString.split("\\.")[1]));
+        if (intNumberLength % 3 == 0) {
+            groupCount = intNumberLength / 3;
         } else {
-            groupCount = (numberLength / 3) + 1;
+            groupCount = (intNumberLength / 3) + 1;
         }
         separatedNumberGroupsStrings = new String[groupCount];
-        String numberString = Integer.toString(number);
+
+        if (intNumberString.equals("0")) {
+            completeNumberWordResult = "zero " + checkSecondNumber(fractionalString);
+        }
         for (int i = 0; i < groupCount; i++) {
-            if (numberString.length() <= 3) {
-                separatedNumberGroupsStrings[i] = numberString;
+            if (intNumberString.length() <= 3) {
+                separatedNumberGroupsStrings[i] = intNumberString;
             } else {
-                separatedNumberGroupsStrings[i] = numberString.substring(numberString.length() - 3, numberString.length());
-                numberString = numberString.substring(0, numberString.length() - 3);
+                separatedNumberGroupsStrings[i] = intNumberString.substring(intNumberString.length() - 3, intNumberString.length());
+                intNumberString = intNumberString.substring(0, intNumberString.length() - 3);
             }
         }
         for (int i = 0; i < groupCount; i++) {
             switch (separatedNumberGroupsStrings[i].length()) {
                 case 1:
-                    completeNumberWordResult = checkFirstNumber(separatedNumberGroupsStrings[i]) + triadDefinition[i] + completeNumberWordResult;
+                    completeNumberWordResult = checkFirstNumber(separatedNumberGroupsStrings[i]) + triadDefinition[i] + completeNumberWordResult + "and " + checkSecondNumber(fractionalString);
                     break;
                 case 2:
-                    completeNumberWordResult = checkSecondNumber(separatedNumberGroupsStrings[i]) + triadDefinition[i] + completeNumberWordResult;
+                    completeNumberWordResult = checkSecondNumber(separatedNumberGroupsStrings[i]) + triadDefinition[i] + completeNumberWordResult + "and " + checkSecondNumber(fractionalString);
                     break;
                 //TODO: we really need such structure just because of hundreds or we can make it easier?
                 case 3:
                     if (checkFirstNumber(separatedNumberGroupsStrings[i]).equals("")) {
                         completeNumberWordResult = checkFirstNumber(separatedNumberGroupsStrings[i]) +
-                                checkSecondNumber(separatedNumberGroupsStrings[i].substring(1)) + triadDefinition[i] + completeNumberWordResult;
+                                checkSecondNumber(separatedNumberGroupsStrings[i].substring(1)) + triadDefinition[i] + completeNumberWordResult + "and " + checkSecondNumber(fractionalString);
                     } else {
                         completeNumberWordResult = checkFirstNumber(separatedNumberGroupsStrings[i]) + "hundred " +
-                                checkSecondNumber(separatedNumberGroupsStrings[i].substring(1)) + triadDefinition[i] + completeNumberWordResult;
+                                checkSecondNumber(separatedNumberGroupsStrings[i].substring(1)) + triadDefinition[i] + completeNumberWordResult + "and " + checkSecondNumber(fractionalString);
                     }
                     break;
                 default:
@@ -62,6 +64,10 @@ public class NumberToWordInterpreter {
         String resultingWord = "";
         int integerNumber = Integer.valueOf(numberString);
         if (integerNumber < 20) {
+            if (numberString.charAt(0) == '0') {
+                resultingWord = checkFirstNumber(numberString.substring(1));
+                return resultingWord;
+            }
             switch (integerNumber) {
                 case 10:
                     resultingWord = "ten ";
@@ -92,6 +98,9 @@ public class NumberToWordInterpreter {
                     break;
                 case 19:
                     resultingWord = "nineteen ";
+                    break;
+                case 00:
+                    resultingWord = "";
                     break;
                 default:
                     resultingWord = "Translation error!";

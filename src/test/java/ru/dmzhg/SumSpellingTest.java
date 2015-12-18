@@ -16,29 +16,31 @@ public class SumSpellingTest {
     private Integer sum;
     private Integer numberToBeSpelled;
     private Integer engNum;
-    private Integer fiveNumber;
-    private int oneNumber;
-    private int tenNumber;
-    private int fourteenNumber;
-    private int thirtyFiveNumber;
-    private int twentyFourNumber;
-    private int oneHundredTwentyFourNumber;
-    private int oneThousandTwoHundredThirtyFiveNumber;
-    private int millionNumber;
-    private int hasZerosNumber;
+    private Double fiveNumber;
+    private Double oneNumber;
+    private Double tenNumber;
+    private Double fourteenNumber;
+    private Double thirtyFiveNumber;
+    private Double twentyFourNumber;
+    private Double oneHundredTwentyFourNumber;
+    private Double oneThousandTwoHundredThirtyFiveNumber;
+    private Double millionNumber;
+    private Double hasZerosNumber;
+    private Double oneHundredFiftyOneAndFortyFiveNumber;
 
     @Before
     public void setUp() {
-        fiveNumber = 5;
-        oneNumber = 1;
-        tenNumber = 10;
-        fourteenNumber = 14;
-        thirtyFiveNumber = 35;
-        twentyFourNumber = 24;
-        oneHundredTwentyFourNumber = 124;
-        oneThousandTwoHundredThirtyFiveNumber = 1235;
-        millionNumber = 2555123;
-        hasZerosNumber = 54043;
+        fiveNumber = 5D;
+        oneNumber = 1D;
+        tenNumber = 10D;
+        fourteenNumber = 14D;
+        thirtyFiveNumber = 35D;
+        twentyFourNumber = 24D;
+        oneHundredTwentyFourNumber = 124D;
+        oneThousandTwoHundredThirtyFiveNumber = 1235D;
+        millionNumber = 2555123D;
+        hasZerosNumber = 54043D;
+        oneHundredFiftyOneAndFortyFiveNumber = 151.45;
     }
 
     @After
@@ -99,6 +101,26 @@ public class SumSpellingTest {
 
     @Test
     public void shouldTranslateLidiaNumberToWord() {
-        assertEquals("three hundred thirty six ", NumberToWordInterpreter.translate(336));
+        assertEquals("three hundred thirty six ", NumberToWordInterpreter.translate(336D));
+    }
+
+    @Test
+    public void shouldTranslateThirtyFiveNumberToCurrency() {
+        assertEquals("thirty five ", NumberToWordInterpreter.translate(thirtyFiveNumber));
+    }
+
+    @Test
+    public void shouldReactOnZeroNumber() {
+        assertEquals("zero ", NumberToWordInterpreter.translate(0D));
+    }
+
+    @Test
+    public void shouldTranslateLongNumberWithZerosToWord() {
+        assertEquals("one hundred one thousand and zero", NumberToWordInterpreter.translate(101000D));
+    }
+
+    @Test
+    public void shouldTranslateCurrencyWithCents() {
+        assertEquals("one hundred fifty one and forty five ", NumberToWordInterpreter.translate(oneHundredFiftyOneAndFortyFiveNumber));
     }
 }

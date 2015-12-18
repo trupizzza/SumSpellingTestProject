@@ -5,19 +5,26 @@ package main.java.ru.dmzhg;
  */
 public class CurrencyToWordInterpreter {
     private static String[] triadDefinition = new String[]{"", "тысяч", "миллион", "миллиард"};
-    private static String[][] triadSuffix = new String[][]{{"", ""}, {"", "а"}, {"", "я"}, {"", "я"}, {"", "я"}, {"", "ей"}, {"", "ей"}, {"", "ей"}, {"", "ей"}, {"", "ей"}};
+    private static String[][] triadSuffix = {
+            {"ек ", "йка ", "йки ", "ек "},
+            {"", "а ", "и ", ""},
+            {"ов ", "", "а ", "ов "},
+            {"ов ", "", "а ", "ов "},
+    };
+    private static String[] kopeckSuffix = new String[]{"ек ", "йка ", "йки ", "йки ", "йки ", "ек ", "ек ", "ек ", "ек ", "ек "};
 
     public static String convert(Double number) {
+
         String completeNumberWordResult = "";
         int intNumberLength;
         int groupCount;
-        String triadSuffix = " ";
         String[] separatedNumberGroupsStrings;
         String numberString = number.toString();
         String intNumberString = Integer.toString(number.intValue());
         intNumberLength = Integer.toString(number.intValue()).length();
         String fractionalString = String.valueOf(Integer.parseInt(numberString.split("\\.")[1]));
-        String fractionalResultString = checkSecondNumber(fractionalString, 0) + "копеек";
+
+        String fractionalResultString = checkSecondNumber(fractionalString, 0);
 
         if (fractionalString.equals("0") & intNumberString.equals("0")) {
             return "ноль ";
@@ -45,20 +52,14 @@ public class CurrencyToWordInterpreter {
             switch (separatedNumberGroupsStrings[i].length()) {
                 case 1:
 
-                    completeNumberWordResult = checkFirstNumber(separatedNumberGroupsStrings[i], i) + triadDefinition[i] + triadSuffix + completeNumberWordResult;
+                    completeNumberWordResult = checkFirstNumber(separatedNumberGroupsStrings[i], i) + completeNumberWordResult;
                     break;
                 case 2:
-                    completeNumberWordResult = checkSecondNumber(separatedNumberGroupsStrings[i], i) + triadDefinition[i] + triadSuffix + completeNumberWordResult;
+                    completeNumberWordResult = checkSecondNumber(separatedNumberGroupsStrings[i], i) + completeNumberWordResult;
                     break;
-                //TODO: we really need such structure just because of hundreds or we can make it easier?
                 case 3:
-                    if (checkFirstNumber(separatedNumberGroupsStrings[i], i).equals("")) {
-                        completeNumberWordResult = checkFirstNumber(separatedNumberGroupsStrings[i], i) +
-                                checkSecondNumber(separatedNumberGroupsStrings[i].substring(1), i) + triadDefinition[i] + triadSuffix + completeNumberWordResult;
-                    } else {
-                        completeNumberWordResult = checkFirstNumber(separatedNumberGroupsStrings[i], i) + "сотен " +
-                                checkSecondNumber(separatedNumberGroupsStrings[i].substring(1), i) + triadDefinition[i] + triadSuffix + completeNumberWordResult;
-                    }
+                    completeNumberWordResult = checkFirstNumber(separatedNumberGroupsStrings[i], i) +
+                            checkSecondNumber(separatedNumberGroupsStrings[i].substring(1), i) + completeNumberWordResult;
                     break;
                 default:
                     return "";
@@ -72,63 +73,103 @@ public class CurrencyToWordInterpreter {
     }
 
     private static String checkFirstNumber(String numberString, int currentGroupCount) {
-        String resultingWord;
-        switch (numberString.charAt(0)) {
-            case '1':
-                if (currentGroupCount == 1) {
-                    resultingWord = "одна " + triadDefinition[currentGroupCount] + triadSuffix[currentGroupCount][1];
+        String resultingWord = "";
+        if (numberString.length() > 2) {
+            switch (numberString.charAt(0)) {
+                case '1':
+                    resultingWord = "сто ";
                     break;
-                } else {
-                    resultingWord = "один ";
+                case '2':
+                    resultingWord = "двести ";
                     break;
-                }
+                case '3':
+                    resultingWord = "триста ";
+                    break;
+                case '4':
+                    resultingWord = "четыреста ";
+                    break;
+                case '5':
+                    resultingWord = "пятьсот ";
+                    break;
+                case '6':
+                    resultingWord = "шестьсот ";
+                    break;
+                case '7':
+                    resultingWord = "семьсот ";
+                    break;
+                case '8':
+                    resultingWord = "восемьсот ";
+                    break;
+                case '9':
+                    resultingWord = "девятьсот ";
+            }
+            return resultingWord;
+        } else {
+            switch (numberString.charAt(0)) {
+                case '1':
+                    if (currentGroupCount == 1) {
 
-            case '2':
-                if (currentGroupCount == 1) {
-                    resultingWord = "две ";
+                        resultingWord = "одна " + triadDefinition[currentGroupCount] + triadSuffix[currentGroupCount][1];
+                        break;
+                    } else {
+                        resultingWord = "один " + triadDefinition[currentGroupCount] + triadSuffix[currentGroupCount][2];
+                        break;
+                    }
+
+                case '2':
+                    if (currentGroupCount == 1) {
+                        resultingWord = "две " + triadDefinition[currentGroupCount] + triadSuffix[currentGroupCount][2];
+                        break;
+                    } else {
+                        resultingWord = "два " + triadDefinition[currentGroupCount] + triadSuffix[currentGroupCount][2];
+                        break;
+                    }
+                case '3':
+                    resultingWord = "три ";
                     break;
-                } else {
-                    resultingWord = "два ";
+                case '4':
+                    resultingWord = "четыре ";
                     break;
-                }
-            case '3':
-                resultingWord = "три ";
-                break;
-            case '4':
-                resultingWord = "четыре ";
-                break;
-            case '5':
-                resultingWord = "пять ";
-                break;
-            case '6':
-                resultingWord = "шесть ";
-                break;
-            case '7':
-                resultingWord = "семь ";
-                break;
-            case '8':
-                resultingWord = "восемь ";
-                break;
-            case '9':
-                resultingWord = "девять ";
-                break;
-            case '0':
-                resultingWord = "";
-                break;
-            default:
-                return "Translation error!";
+                case '5':
+                    resultingWord = "пять ";
+                    break;
+                case '6':
+                    resultingWord = "шесть ";
+                    break;
+                case '7':
+                    resultingWord = "семь ";
+                    break;
+                case '8':
+                    resultingWord = "восемь ";
+                    break;
+                case '9':
+                    resultingWord = "девять ";
+                    break;
+                case '0':
+                    resultingWord = "";
+                    break;
+                default:
+                    return "Translation error!";
+            }
+
         }
+
         return resultingWord;
     }
 
     private static String checkSecondNumber(String numberString, int currentGroupCount) {
-        String resultingWord = "";
+        String resultingWord;
+        String kopeckWord="";
+        if(currentGroupCount==0)
+        {
+            kopeckWord = "копе"+kopeckSuffix[Character.getNumericValue(numberString.charAt(1))];
+        }
         int integerNumber = Integer.valueOf(numberString);
         if (integerNumber < 20) {
             if (numberString.charAt(0) == '0') {
                 if (numberString.length() < 2) {
                     resultingWord = "ноль ";
-                    return resultingWord;
+                    return resultingWord+kopeckWord;
                 }
                 resultingWord = checkFirstNumber(numberString.substring(1), currentGroupCount);
                 return resultingWord;
@@ -203,6 +244,7 @@ public class CurrencyToWordInterpreter {
             }
             resultingWord += checkFirstNumber(numberString.substring(1), currentGroupCount);
         }
+
         return resultingWord;
     }
 }

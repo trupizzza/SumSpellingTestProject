@@ -4,7 +4,12 @@ package main.java.ru.dmzhg;
  * Created by DMZHG on 11.12.2015.
  */
 public class NumberToWordInterpreter {
+
+    private static String[] triadDefinition = new String[]{"", "thousand ", "million ", "billion "};
+
+
     public static String translate(final int number) {
+        String completeNumberWordResult = "";
         int length = 0;
         int numberLength = 0;
         int groupCount = 0;
@@ -24,20 +29,33 @@ public class NumberToWordInterpreter {
                 separatedNumberGroupsStrings[i] = numberString;
             } else {
                 separatedNumberGroupsStrings[i] = numberString.substring(numberString.length() - 3, numberString.length());
+                numberString = numberString.substring(0, numberString.length() - 3);
             }
-            switch (separatedNumberGroupsStrings[separatedNumberGroupsStrings.length - 1].length()) {
+        }
+        for (int i = 0; i < groupCount; i++) {
+            switch (separatedNumberGroupsStrings[i].length()) {
                 case 1:
-                    return checkFirstNumber(separatedNumberGroupsStrings[length]);
+                    completeNumberWordResult = checkFirstNumber(separatedNumberGroupsStrings[i]) + triadDefinition[i] + completeNumberWordResult;
+                    break;
                 case 2:
-                    return checkSecondNumber(separatedNumberGroupsStrings[length]);
+                    completeNumberWordResult = checkSecondNumber(separatedNumberGroupsStrings[i]) + triadDefinition[i] + completeNumberWordResult;
+                    break;
+                //TODO: we really need such structure just because of hundreds or we can make it easier?
                 case 3:
-                    return checkFirstNumber(separatedNumberGroupsStrings[length]) + "hundred " + checkSecondNumber(separatedNumberGroupsStrings[length].substring(1));
+                    if (checkFirstNumber(separatedNumberGroupsStrings[i]).equals("")) {
+                        completeNumberWordResult = checkFirstNumber(separatedNumberGroupsStrings[i]) +
+                                checkSecondNumber(separatedNumberGroupsStrings[i].substring(1)) + triadDefinition[i] + completeNumberWordResult;
+                    } else {
+                        completeNumberWordResult = checkFirstNumber(separatedNumberGroupsStrings[i]) + "hundred " +
+                                checkSecondNumber(separatedNumberGroupsStrings[i].substring(1)) + triadDefinition[i] + completeNumberWordResult;
+                    }
+                    break;
                 default:
                     return "";
             }
 
         }
-        return "Translation problem!";
+        return completeNumberWordResult;
     }
 
     private static String checkSecondNumber(String numberString) {
@@ -114,7 +132,7 @@ public class NumberToWordInterpreter {
         return resultingWord;
     }
 
-    public static String checkFirstNumber(String numberString) {
+    private static String checkFirstNumber(String numberString) {
         String resultingWord;
         switch (numberString.charAt(0)) {
             case '1':
@@ -146,21 +164,10 @@ public class NumberToWordInterpreter {
                 break;
             case '0':
                 resultingWord = "";
+                break;
             default:
                 return "Translation error!";
         }
         return resultingWord;
     }
 }
-
-
-//
-
-//
-//return resultingWord;
-//        }
-//
-//        }
-
-
-

@@ -21,20 +21,24 @@ public class SumSpellingTest {
     private int tenNumber;
     private int fourteenNumber;
     private int thirtyFiveNumber;
-    private int[] oneToNineNumbersArray;
-    private String[] expectedSpelledNumbers;
     private int twentyFourNumber;
+    private int oneHundredTwentyFourNumber;
+    private int oneThousandTwoHundredThirtyFiveNumber;
+    private int millionNumber;
+    private int hasZerosNumber;
 
     @Before
     public void setUp() {
-        expectedSpelledNumbers = new String[]{"one", "two", "three"};
-        oneToNineNumbersArray = new int[]{1, 2, 3};
         fiveNumber = 5;
         oneNumber = 1;
         tenNumber = 10;
         fourteenNumber = 14;
         thirtyFiveNumber = 35;
         twentyFourNumber = 24;
+        oneHundredTwentyFourNumber = 124;
+        oneThousandTwoHundredThirtyFiveNumber = 1235;
+        millionNumber = 2555123;
+        hasZerosNumber = 54043;
     }
 
     @After
@@ -69,11 +73,32 @@ public class SumSpellingTest {
 
     @Test
     public void shouldTranslateGivenLengthTwoNumberToWord() {
+
         assertEquals("twenty four ", NumberToWordInterpreter.translate(twentyFourNumber));
     }
 
     @Test
-    public void shouldTranslateLengthThreeNumberToWord() {
-        assertEquals("one hundred twenty four ", NumberToWordInterpreter.translate(124));
+    public void shouldTranslateAnyLengthThreeNumberToWord() {
+        assertEquals("one hundred twenty four ", NumberToWordInterpreter.translate(oneHundredTwentyFourNumber));
+    }
+
+    @Test
+    public void shouldTranslateThousandNumber() {
+        assertEquals("one thousand two hundred thirty five ",  NumberToWordInterpreter.translate(oneThousandTwoHundredThirtyFiveNumber));
+    }
+
+    @Test
+    public void shouldTranslateMillionNumberToWord() {
+        assertEquals("two million five hundred fifty five thousand one hundred twenty three ", NumberToWordInterpreter.translate(millionNumber));
+    }
+
+    @Test
+    public void shouldTranslateNumberWithZerosToWord() {
+        assertEquals("fifty four thousand forty three ", NumberToWordInterpreter.translate(hasZerosNumber));
+    }
+
+    @Test
+    public void shouldTranslateLidiaNumberToWord() {
+        assertEquals("three hundred thirty six ", NumberToWordInterpreter.translate(336));
     }
 }

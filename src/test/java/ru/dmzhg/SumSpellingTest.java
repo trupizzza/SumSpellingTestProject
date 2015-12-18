@@ -50,6 +50,6 @@ public class SumSpellingTest {
 
     @Test
     public void translateNumberToRussianCurrencyWord() {
-        assertEquals("сорок пять рублей ноль копеек ", CurrencyToWordInterpreter.convert(45D));
+        assertEquals("сорок пять тысяч рублей ноль копеек ", CurrencyToWordInterpreter.convert(45000D));
     }
 }

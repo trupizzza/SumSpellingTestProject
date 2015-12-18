@@ -4,19 +4,21 @@ package main.java.ru.dmzhg;
  * Created by DMZHG on 11.12.2015.
  */
 public class CurrencyToWordInterpreter {
-    private static String[] triadDefinition = new String[]{"", "тысяч ", "миллион ", "миллиард "};
+    private static String[] triadDefinition = new String[]{"", "тысяч", "миллион", "миллиард"};
+    private static String[] triadSuffix = new String[]{"", "тысяч", "миллион", "миллиард"};
 
     public static String convert(Double number) {
         final String kopek = "копеек";
         String completeNumberWordResult = "";
         int intNumberLength;
         int groupCount;
+        String triadSuffix = " ";
         String[] separatedNumberGroupsStrings;
         String numberString = number.toString();
         String intNumberString = Integer.toString(number.intValue());
         intNumberLength = Integer.toString(number.intValue()).length();
         String fractionalString = String.valueOf(Integer.parseInt(numberString.split("\\.")[1]));
-        String fractionalResultString = checkSecondNumber(fractionalString) + "копеек";
+        String fractionalResultString = checkSecondNumber(fractionalString, 0) + "копеек";
 
         if (fractionalString.equals("0") & intNumberString.equals("0")) {
             return "ноль ";
@@ -43,19 +45,20 @@ public class CurrencyToWordInterpreter {
         for (int i = 0; i < groupCount; i++) {
             switch (separatedNumberGroupsStrings[i].length()) {
                 case 1:
-                    completeNumberWordResult = checkFirstNumber(separatedNumberGroupsStrings[i]) + triadDefinition[i] + completeNumberWordResult;
+
+                    completeNumberWordResult = checkFirstNumber(separatedNumberGroupsStrings[i], i) + triadDefinition[i] + triadSuffix + completeNumberWordResult;
                     break;
                 case 2:
-                    completeNumberWordResult = checkSecondNumber(separatedNumberGroupsStrings[i]) + triadDefinition[i] + completeNumberWordResult;
+                    completeNumberWordResult = checkSecondNumber(separatedNumberGroupsStrings[i], i) + triadDefinition[i] + triadSuffix + completeNumberWordResult;
                     break;
                 //TODO: we really need such structure just because of hundreds or we can make it easier?
                 case 3:
-                    if (checkFirstNumber(separatedNumberGroupsStrings[i]).equals("")) {
-                        completeNumberWordResult = checkFirstNumber(separatedNumberGroupsStrings[i]) +
-                                checkSecondNumber(separatedNumberGroupsStrings[i].substring(1)) + triadDefinition[i] + completeNumberWordResult;
+                    if (checkFirstNumber(separatedNumberGroupsStrings[i], i).equals("")) {
+                        completeNumberWordResult = checkFirstNumber(separatedNumberGroupsStrings[i], i) +
+                                checkSecondNumber(separatedNumberGroupsStrings[i].substring(1), i) + triadDefinition[i] + triadSuffix + completeNumberWordResult;
                     } else {
-                        completeNumberWordResult = checkFirstNumber(separatedNumberGroupsStrings[i]) + "сотен " +
-                                checkSecondNumber(separatedNumberGroupsStrings[i].substring(1)) + triadDefinition[i] + completeNumberWordResult;
+                        completeNumberWordResult = checkFirstNumber(separatedNumberGroupsStrings[i], i) + "сотен " +
+                                checkSecondNumber(separatedNumberGroupsStrings[i].substring(1), i) + triadDefinition[i] + triadSuffix + completeNumberWordResult;
                     }
                     break;
                 default:
@@ -69,7 +72,57 @@ public class CurrencyToWordInterpreter {
         return completeNumberWordResult;
     }
 
-    private static String checkSecondNumber(String numberString) {
+    private static String checkFirstNumber(String numberString, int currentGroupCount) {
+        String resultingWord;
+        switch (numberString.charAt(0)) {
+            case '1':
+                if (currentGroupCount == 1) {
+                    resultingWord = "одна";
+                    break;
+                } else {
+                    resultingWord = "один ";
+                    break;
+                }
+
+            case '2':
+                if (currentGroupCount == 1) {
+                    resultingWord = "две";
+                    break;
+                } else {
+                    resultingWord = "два ";
+                    break;
+                }
+            case '3':
+                resultingWord = "три ";
+                break;
+            case '4':
+                resultingWord = "четыре ";
+                break;
+            case '5':
+                resultingWord = "пять ";
+                break;
+            case '6':
+                resultingWord = "шесть ";
+                break;
+            case '7':
+                resultingWord = "семь ";
+                break;
+            case '8':
+                resultingWord = "восемь ";
+                break;
+            case '9':
+                resultingWord = "девять ";
+                break;
+            case '0':
+                resultingWord = "";
+                break;
+            default:
+                return "Translation error!";
+        }
+        return resultingWord;
+    }
+
+    private static String checkSecondNumber(String numberString, int currentGroupCount) {
         String resultingWord = "";
         int integerNumber = Integer.valueOf(numberString);
         if (integerNumber < 20) {
@@ -78,7 +131,7 @@ public class CurrencyToWordInterpreter {
                     resultingWord = "ноль ";
                     return resultingWord;
                 }
-                resultingWord = checkFirstNumber(numberString.substring(1));
+                resultingWord = checkFirstNumber(numberString.substring(1), currentGroupCount);
                 return resultingWord;
             }
             switch (integerNumber) {
@@ -149,46 +202,7 @@ public class CurrencyToWordInterpreter {
                 default:
                     return "Translation error!";
             }
-            resultingWord += checkFirstNumber(numberString.substring(1));
-        }
-        return resultingWord;
-    }
-
-    private static String checkFirstNumber(String numberString) {
-        String resultingWord;
-        switch (numberString.charAt(0)) {
-            case '1':
-                resultingWord = "один ";
-                break;
-            case '2':
-                resultingWord = "два ";
-                break;
-            case '3':
-                resultingWord = "три ";
-                break;
-            case '4':
-                resultingWord = "четыре ";
-                break;
-            case '5':
-                resultingWord = "пять ";
-                break;
-            case '6':
-                resultingWord = "шесть ";
-                break;
-            case '7':
-                resultingWord = "семь ";
-                break;
-            case '8':
-                resultingWord = "восемь ";
-                break;
-            case '9':
-                resultingWord = "девять ";
-                break;
-            case '0':
-                resultingWord = "";
-                break;
-            default:
-                return "Translation error!";
+            resultingWord += checkFirstNumber(numberString.substring(1), currentGroupCount);
         }
         return resultingWord;
     }

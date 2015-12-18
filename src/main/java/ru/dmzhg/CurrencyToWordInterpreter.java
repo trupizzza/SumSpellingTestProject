@@ -5,10 +5,9 @@ package main.java.ru.dmzhg;
  */
 public class CurrencyToWordInterpreter {
     private static String[] triadDefinition = new String[]{"", "тысяч", "миллион", "миллиард"};
-    private static String[] triadSuffix = new String[]{"", "тысяч", "миллион", "миллиард"};
+    private static String[][] triadSuffix = new String[][]{{"", ""}, {"", "а"}, {"", "я"}, {"", "я"}, {"", "я"}, {"", "ей"}, {"", "ей"}, {"", "ей"}, {"", "ей"}, {"", "ей"}};
 
     public static String convert(Double number) {
-        final String kopek = "копеек";
         String completeNumberWordResult = "";
         int intNumberLength;
         int groupCount;
@@ -77,7 +76,7 @@ public class CurrencyToWordInterpreter {
         switch (numberString.charAt(0)) {
             case '1':
                 if (currentGroupCount == 1) {
-                    resultingWord = "одна";
+                    resultingWord = "одна " + triadDefinition[currentGroupCount] + triadSuffix[currentGroupCount][1];
                     break;
                 } else {
                     resultingWord = "один ";
@@ -86,7 +85,7 @@ public class CurrencyToWordInterpreter {
 
             case '2':
                 if (currentGroupCount == 1) {
-                    resultingWord = "две";
+                    resultingWord = "две ";
                     break;
                 } else {
                     resultingWord = "два ";

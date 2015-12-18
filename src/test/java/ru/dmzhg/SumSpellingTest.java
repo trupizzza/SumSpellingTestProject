@@ -1,6 +1,6 @@
 package test.java.ru.dmzhg;
 
-import main.java.ru.dmzhg.NumberToWordInterpreter;
+import main.java.ru.dmzhg.CurrencyToWordInterpreter;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,78 +49,7 @@ public class SumSpellingTest {
     }
 
     @Test
-    public void shouldTranslateNumberFiveToWord() {
-        assertEquals("five ", NumberToWordInterpreter.translate(fiveNumber));
-    }
-
-    @Test
-    public void shouldTranslateNumberOneToWord() {
-        assertEquals("one ", NumberToWordInterpreter.translate(oneNumber));
-    }
-
-    @Test
-    public void shouldTranslateNumberTenToWord() {
-        assertEquals("ten ", NumberToWordInterpreter.translate(tenNumber));
-    }
-
-    @Test
-    public void shouldTranslateNumberFourteenToWord() {
-        assertEquals("fourteen ", NumberToWordInterpreter.translate(fourteenNumber));
-    }
-
-    @Test
-    public void shouldTranslateThirtyFiveNumberToWord() {
-        assertEquals("thirty five ", NumberToWordInterpreter.translate(thirtyFiveNumber));
-    }
-
-    @Test
-    public void shouldTranslateGivenLengthTwoNumberToWord() {
-
-        assertEquals("twenty four ", NumberToWordInterpreter.translate(twentyFourNumber));
-    }
-
-    @Test
-    public void shouldTranslateAnyLengthThreeNumberToWord() {
-        assertEquals("one hundred twenty four ", NumberToWordInterpreter.translate(oneHundredTwentyFourNumber));
-    }
-
-    @Test
-    public void shouldTranslateThousandNumber() {
-        assertEquals("one thousand two hundred thirty five ",  NumberToWordInterpreter.translate(oneThousandTwoHundredThirtyFiveNumber));
-    }
-
-    @Test
-    public void shouldTranslateMillionNumberToWord() {
-        assertEquals("two million five hundred fifty five thousand one hundred twenty three ", NumberToWordInterpreter.translate(millionNumber));
-    }
-
-    @Test
-    public void shouldTranslateNumberWithZerosToWord() {
-        assertEquals("fifty four thousand forty three ", NumberToWordInterpreter.translate(hasZerosNumber));
-    }
-
-    @Test
-    public void shouldTranslateLidiaNumberToWord() {
-        assertEquals("three hundred thirty six ", NumberToWordInterpreter.translate(336D));
-    }
-
-    @Test
-    public void shouldTranslateThirtyFiveNumberToCurrency() {
-        assertEquals("thirty five ", NumberToWordInterpreter.translate(thirtyFiveNumber));
-    }
-
-    @Test
-    public void shouldReactOnZeroNumber() {
-        assertEquals("zero ", NumberToWordInterpreter.translate(0D));
-    }
-
-    @Test
-    public void shouldTranslateLongNumberWithZerosToWord() {
-        assertEquals("one hundred one thousand and zero", NumberToWordInterpreter.translate(101000D));
-    }
-
-    @Test
-    public void shouldTranslateCurrencyWithCents() {
-        assertEquals("one hundred fifty one and forty five ", NumberToWordInterpreter.translate(oneHundredFiftyOneAndFortyFiveNumber));
+    public void translateNumberToRussianCurrencyWord() {
+        assertEquals("сорок пять рублей ноль копеек ", CurrencyToWordInterpreter.convert(45D));
     }
 }

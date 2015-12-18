@@ -3,19 +3,24 @@ package main.java.ru.dmzhg;
 /**
  * Created by DMZHG on 11.12.2015.
  */
-public class NumberToWordInterpreter {
-    private static String[] triadDefinition = new String[]{"", "thousand ", "million ", "billion "};
+public class CurrencyToWordInterpreter {
+    private static String[] triadDefinition = new String[]{"", "тысяч ", "миллион ", "миллиард "};
 
-    public static String translate(Double number) {
+    public static String convert(Double number) {
+        final String kopek = "копеек";
         String completeNumberWordResult = "";
-        int intNumberLength = 0;
-        int groupCount = 0;
+        int intNumberLength;
+        int groupCount;
         String[] separatedNumberGroupsStrings;
         String numberString = number.toString();
         String intNumberString = Integer.toString(number.intValue());
         intNumberLength = Integer.toString(number.intValue()).length();
-        String decimalString = String.valueOf(Integer.parseInt(numberString.split("\\.")[0]));
         String fractionalString = String.valueOf(Integer.parseInt(numberString.split("\\.")[1]));
+        String fractionalResultString = checkSecondNumber(fractionalString) + "копеек";
+
+        if (fractionalString.equals("0") & intNumberString.equals("0")) {
+            return "ноль ";
+        }
         if (intNumberLength % 3 == 0) {
             groupCount = intNumberLength / 3;
         } else {
@@ -24,7 +29,8 @@ public class NumberToWordInterpreter {
         separatedNumberGroupsStrings = new String[groupCount];
 
         if (intNumberString.equals("0")) {
-            completeNumberWordResult = "zero " + checkSecondNumber(fractionalString);
+
+            completeNumberWordResult = "ноль " + fractionalResultString;
         }
         for (int i = 0; i < groupCount; i++) {
             if (intNumberString.length() <= 3) {
@@ -37,23 +43,26 @@ public class NumberToWordInterpreter {
         for (int i = 0; i < groupCount; i++) {
             switch (separatedNumberGroupsStrings[i].length()) {
                 case 1:
-                    completeNumberWordResult = checkFirstNumber(separatedNumberGroupsStrings[i]) + triadDefinition[i] + completeNumberWordResult + "and " + checkSecondNumber(fractionalString);
+                    completeNumberWordResult = checkFirstNumber(separatedNumberGroupsStrings[i]) + triadDefinition[i] + completeNumberWordResult;
                     break;
                 case 2:
-                    completeNumberWordResult = checkSecondNumber(separatedNumberGroupsStrings[i]) + triadDefinition[i] + completeNumberWordResult + "and " + checkSecondNumber(fractionalString);
+                    completeNumberWordResult = checkSecondNumber(separatedNumberGroupsStrings[i]) + triadDefinition[i] + completeNumberWordResult;
                     break;
                 //TODO: we really need such structure just because of hundreds or we can make it easier?
                 case 3:
                     if (checkFirstNumber(separatedNumberGroupsStrings[i]).equals("")) {
                         completeNumberWordResult = checkFirstNumber(separatedNumberGroupsStrings[i]) +
-                                checkSecondNumber(separatedNumberGroupsStrings[i].substring(1)) + triadDefinition[i] + completeNumberWordResult + "and " + checkSecondNumber(fractionalString);
+                                checkSecondNumber(separatedNumberGroupsStrings[i].substring(1)) + triadDefinition[i] + completeNumberWordResult;
                     } else {
-                        completeNumberWordResult = checkFirstNumber(separatedNumberGroupsStrings[i]) + "hundred " +
-                                checkSecondNumber(separatedNumberGroupsStrings[i].substring(1)) + triadDefinition[i] + completeNumberWordResult + "and " + checkSecondNumber(fractionalString);
+                        completeNumberWordResult = checkFirstNumber(separatedNumberGroupsStrings[i]) + "сотен " +
+                                checkSecondNumber(separatedNumberGroupsStrings[i].substring(1)) + triadDefinition[i] + completeNumberWordResult;
                     }
                     break;
                 default:
                     return "";
+            }
+            if (i == separatedNumberGroupsStrings.length - 1) {
+                completeNumberWordResult += "рублей " + fractionalResultString;
             }
 
         }
@@ -65,39 +74,43 @@ public class NumberToWordInterpreter {
         int integerNumber = Integer.valueOf(numberString);
         if (integerNumber < 20) {
             if (numberString.charAt(0) == '0') {
+                if (numberString.length() < 2) {
+                    resultingWord = "ноль ";
+                    return resultingWord;
+                }
                 resultingWord = checkFirstNumber(numberString.substring(1));
                 return resultingWord;
             }
             switch (integerNumber) {
                 case 10:
-                    resultingWord = "ten ";
+                    resultingWord = "десять ";
                     break;
                 case 11:
-                    resultingWord = "eleven ";
+                    resultingWord = "одиннадцать ";
                     break;
                 case 12:
-                    resultingWord = "twelve ";
+                    resultingWord = "двенадцать ";
                     break;
                 case 13:
-                    resultingWord = "thirteen ";
+                    resultingWord = "тринадцать ";
                     break;
                 case 14:
-                    resultingWord = "fourteen ";
+                    resultingWord = "четырнадцать ";
                     break;
                 case 15:
-                    resultingWord = "fifteen ";
+                    resultingWord = "пятнадцать ";
                     break;
                 case 16:
-                    resultingWord = "sixteen ";
+                    resultingWord = "шестандцать ";
                     break;
                 case 17:
-                    resultingWord = "seventeen ";
+                    resultingWord = "семнадцать ";
                     break;
                 case 18:
-                    resultingWord = "eighteen ";
+                    resultingWord = "восемнадцать ";
                     break;
                 case 19:
-                    resultingWord = "nineteen ";
+                    resultingWord = "девятнадцать ";
                     break;
                 case 00:
                     resultingWord = "";
@@ -110,28 +123,28 @@ public class NumberToWordInterpreter {
         } else {
             switch (numberString.charAt(0)) {
                 case '2':
-                    resultingWord = "twenty ";
+                    resultingWord = "двадцать ";
                     break;
                 case '3':
-                    resultingWord = "thirty ";
+                    resultingWord = "тридцать ";
                     break;
                 case '4':
-                    resultingWord = "forty ";
+                    resultingWord = "сорок ";
                     break;
                 case '5':
-                    resultingWord = "fifty ";
+                    resultingWord = "пятьдесят ";
                     break;
                 case '6':
-                    resultingWord = "sixty ";
+                    resultingWord = "шестьдесят ";
                     break;
                 case '7':
-                    resultingWord = "seventy ";
+                    resultingWord = "семьдесят ";
                     break;
                 case '8':
-                    resultingWord = "eighty ";
+                    resultingWord = "восемьдесят ";
                     break;
                 case '9':
-                    resultingWord = "ninety ";
+                    resultingWord = "девяносто ";
                     break;
                 default:
                     return "Translation error!";
@@ -145,31 +158,31 @@ public class NumberToWordInterpreter {
         String resultingWord;
         switch (numberString.charAt(0)) {
             case '1':
-                resultingWord = "one ";
+                resultingWord = "один ";
                 break;
             case '2':
-                resultingWord = "two ";
+                resultingWord = "два ";
                 break;
             case '3':
-                resultingWord = "three ";
+                resultingWord = "три ";
                 break;
             case '4':
-                resultingWord = "four ";
+                resultingWord = "четыре ";
                 break;
             case '5':
-                resultingWord = "five ";
+                resultingWord = "пять ";
                 break;
             case '6':
-                resultingWord = "six ";
+                resultingWord = "шесть ";
                 break;
             case '7':
-                resultingWord = "seven ";
+                resultingWord = "семь ";
                 break;
             case '8':
-                resultingWord = "eight ";
+                resultingWord = "восемь ";
                 break;
             case '9':
-                resultingWord = "nine ";
+                resultingWord = "девять ";
                 break;
             case '0':
                 resultingWord = "";

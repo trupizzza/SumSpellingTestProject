@@ -4,17 +4,15 @@ package main.java.ru.dmzhg;
  * Created by DMZHG on 11.12.2015.
  */
 public class CurrencyToWordInterpreter {
-    private static String[] triadDefinition = new String[]{"", "", "тысяч", "миллион", "миллиард"};
-    private static String[][] triadSuffix = {
-            {"", "", "", ""},
-            {"", "", "", ""},
-            {"", "а ", "и ", ""},
-            {"ов ", "", "а ", "ов "},
-            {"ов ", "", "а ", "ов "},
-    };
     static int suffixNumber;
-    private static String[] kopeckSuffix = new String[]{"ек ", "йка ", "йки ", "йки ", "йки ", "ек ", "ек ", "ек ", "ек ", "ек "};
-    private static String[] rubSuffix = new String[]{"ей ", "ь ", "я ", "я ", "я ", "ей ", "ей ", "ей ", "ей ", "ей "};
+    private static String[] triadDefinition = new String[]{"копе", "рубл", "тысяч", "миллион", "миллиард"};
+    private static String[][] triadSuffix = {
+            {"ек ", "йка ", "йки ", "йки ", "йки ", "ек ", "ек ", "ек ", "ек ", "ек "},
+            {"ей ", "ь ", "я ", "я ", "я ", "ей ", "ей ", "ей ", "ей ", "ей "},
+            {" ", "а ", "и ", "и ", "и ", "", "", "", "", ""},
+            {" ", "а ", "а ", "а ", "ов ", "ов ", "ов ", "ов ", "ов "},
+            {" ", "а ", "а ", "а ", "ов ", "ов ", "ов ", "ов ", "ов "},
+    };
 
     public static String convert(Double number) {
 
@@ -28,7 +26,7 @@ public class CurrencyToWordInterpreter {
         intNumberLength = Integer.toString(number.intValue()).length();
         String fractionalString = String.valueOf(Integer.parseInt(numberString.split("\\.")[1]));
 
-        String fractionalResultString = checkSecondNumber(fractionalString, 0) + "копе" + kopeckSuffix[suffixNumber];
+        String fractionalResultString = checkSecondNumber(fractionalString, 0);
 
         if (fractionalString.equals("0") & intNumberString.equals("0")) {
             return "ноль рублей ноль копеек ";
@@ -68,8 +66,8 @@ public class CurrencyToWordInterpreter {
                 default:
                     return "";
             }
-            if (i == separatedNumberGroupsStrings.length-1) {
-                completeNumberWordResult += "рубл" +  rubSuffix[suffixNumber] +fractionalResultString;
+            if (i == separatedNumberGroupsStrings.length - 1) {
+                completeNumberWordResult += fractionalResultString;
             }
 
         }
@@ -112,29 +110,31 @@ public class CurrencyToWordInterpreter {
             switch (numberString.charAt(0)) {
                 case '1':
                     if (currentGroupCount == 0) {
-                        resultingWord = "одна " + triadDefinition[currentGroupCount];
+                        resultingWord = "одна ";
                         suffixNumber = 1;
                         break;
                     }
                     if (currentGroupCount == 2) {
-                        resultingWord = "одна " + triadDefinition[currentGroupCount] + triadSuffix[currentGroupCount][1];
+                        resultingWord = "одна ";
+                        suffixNumber = 1;
                         break;
                     } else {
-                        resultingWord = "один " + triadDefinition[currentGroupCount];
+                        resultingWord = "один ";
                         break;
                     }
 
                 case '2':
                     if (currentGroupCount == 0) {
-                        resultingWord = "две " + triadDefinition[currentGroupCount];
+                        resultingWord = "две ";
                         suffixNumber = 2;
                         break;
                     }
                     if (currentGroupCount == 2) {
-                        resultingWord = "две " + triadDefinition[currentGroupCount] + triadSuffix[currentGroupCount][2];
+                        resultingWord = "две ";
+                        suffixNumber = 2;
                         break;
                     } else {
-                        resultingWord = "два " + triadDefinition[currentGroupCount] + triadSuffix[currentGroupCount][2];
+                        resultingWord = "два ";
                         break;
                     }
                 case '3':
@@ -175,7 +175,7 @@ public class CurrencyToWordInterpreter {
 
         }
 
-        return resultingWord;
+        return resultingWord + triadDefinition[currentGroupCount] + triadSuffix[currentGroupCount][suffixNumber];
     }
 
     private static String checkSecondNumber(String numberString, int currentGroupCount) {
@@ -185,7 +185,8 @@ public class CurrencyToWordInterpreter {
         if (integerNumber < 20) {
             if (numberString.charAt(0) == '0') {
                 if (numberString.length() < 2) {
-                    resultingWord = "ноль ";
+                    suffixNumber = 0;
+                    resultingWord = "ноль " + triadDefinition[currentGroupCount] + triadSuffix[currentGroupCount][suffixNumber];
                     return resultingWord;
                 }
                 resultingWord = checkFirstNumber(numberString.substring(1), currentGroupCount);
@@ -229,7 +230,8 @@ public class CurrencyToWordInterpreter {
                     resultingWord = "Translation error!";
                     break;
             }
-            return resultingWord;
+            suffixNumber = 0;
+            return resultingWord + triadDefinition[currentGroupCount] + triadSuffix[currentGroupCount][suffixNumber];
         } else {
             switch (numberString.charAt(0)) {
                 case '2':

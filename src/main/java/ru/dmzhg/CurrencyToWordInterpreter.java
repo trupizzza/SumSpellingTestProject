@@ -28,9 +28,7 @@ public class CurrencyToWordInterpreter {
 
         String fractionalResultString = checkSecondNumber(fractionalString, 0);
 
-        if (fractionalString.equals("0") & intNumberString.equals("0")) {
-            return "ноль рублей ноль копеек ";
-        }
+
         if (intNumberLength % 3 == 0) {
             groupCount = intNumberLength / 3;
         } else {
@@ -38,10 +36,6 @@ public class CurrencyToWordInterpreter {
         }
         separatedNumberGroupsStrings = new String[groupCount];
 
-        if (intNumberString.equals("0")) {
-
-            completeNumberWordResult = "ноль " + fractionalResultString;
-        }
         for (int i = 0; i < groupCount; i++) {
             if (intNumberString.length() <= 3) {
                 separatedNumberGroupsStrings[i] = intNumberString;
@@ -71,6 +65,7 @@ public class CurrencyToWordInterpreter {
             }
 
         }
+        System.out.println(completeNumberWordResult);
         return completeNumberWordResult;
     }
 

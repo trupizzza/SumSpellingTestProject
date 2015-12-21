@@ -13,17 +13,6 @@ import static org.junit.Assert.assertEquals;
 
 
 public class SumSpellingTest {
-    private Integer sum;
-    private Integer numberToBeSpelled;
-    private Integer engNum;
-    private Double fiveNumber;
-    private Double oneNumber;
-    private Double tenNumber;
-    private Double fourteenNumber;
-    private Double thirtyFiveNumber;
-    private Double twentyFourNumber;
-    private Double oneHundredTwentyFourNumber;
-    private Double oneThousandTwoHundredThirtyFiveNumber;
     private Double millionNumber;
     private Double hasZerosNumber;
     private Double oneHundredFiftyOneAndFortyFiveNumber;
@@ -31,30 +20,36 @@ public class SumSpellingTest {
     private double zeroRubZeroKopecks;
     private double fiftyOneRubFirtyOneKop;
     private double twoMillionFoouHundredFiftyOneThousandFiftyRub31Kop;
+    private double threeHundredFiftySixRub78Kop;
+    private double twoHundredTwoThousand711Rub82Kop;
+    private double oneMillion12Thousand3Rub43Kop;
 
     @Before
     public void setUp() {
-        millionNumber = 2555123D;
-        hasZerosNumber = 54043D;
+        millionNumber = 2555123.00;
+        hasZerosNumber = 54043.00;
+        threeHundredFiftySixRub78Kop = 356.78;
         oneHundredFiftyOneAndFortyFiveNumber = 151.45;
-        fortyOneThousandNumber = 41000D;
-        zeroRubZeroKopecks = 0.0D;
-        fiftyOneRubFirtyOneKop = 51.41D;
-        twoMillionFoouHundredFiftyOneThousandFiftyRub31Kop = 2451500.31D;
+        fortyOneThousandNumber = 41000.00;
+        zeroRubZeroKopecks = 0.00;
+        fiftyOneRubFirtyOneKop = 51.41;
+        twoMillionFoouHundredFiftyOneThousandFiftyRub31Kop = 2451500.31;
+        twoHundredTwoThousand711Rub82Kop = 202711.82;
+        oneMillion12Thousand3Rub43Kop = 1012003.43;
     }
 
     @After
     public void tearDown() {
-        sum = null;
     }
 
     @Test
     public void translateFortyOneThousandToRusCurrencyWord() {
         assertEquals("сорок одна тысяча рублей ноль копеек ", CurrencyToWordInterpreter.convert(fortyOneThousandNumber));
     }
+
     @Test
-    public void translateAnotherNumberToRusCurrencyWord() {
-        assertEquals("триста пятьдесят шесть рублей семьдесят восемь копеек ", CurrencyToWordInterpreter.convert(356.78D));
+    public void translate356Rub78KopToRusCurrencyWord() {
+        assertEquals("триста пятьдесят шесть рублей семьдесят восемь копеек ", CurrencyToWordInterpreter.convert(threeHundredFiftySixRub78Kop));
     }
 
     @Test
@@ -66,18 +61,24 @@ public class SumSpellingTest {
     public void translateZeroRubZeroKopToRusCurrencyWord() {
         assertEquals("ноль рублей ноль копеек ", CurrencyToWordInterpreter.convert(zeroRubZeroKopecks));
     }
+
     @Test
     public void translate51Rub41KopToRusCurrencyWord() {
         assertEquals("пятьдесят один рубль сорок одна копейка ", CurrencyToWordInterpreter.convert(fiftyOneRubFirtyOneKop));
     }
+
     @Test
-    public void translate202Thousands711Rub82KopToRusCurrencyWord()
-    {
-        assertEquals("двести две тысячи семьсот одиннадцать рублей восемьдесят две копейки ", CurrencyToWordInterpreter.convert(202711.82D));
+    public void translate202Thousands711Rub82KopToRusCurrencyWord() {
+        assertEquals("двести две тысячи семьсот одиннадцать рублей восемьдесят две копейки ", CurrencyToWordInterpreter.convert(twoHundredTwoThousand711Rub82Kop));
     }
 
     @Test
-    public void translateSumToWord() {
-        assertEquals("один миллион двенадцать тысяч три рубля сорок три копейки ", CurrencyToWordInterpreter.convert(1012003.43D));
+    public void translate1Million12Thousands3Rub43KopToRusCurrencyWord() {
+        assertEquals("один миллион двенадцать тысяч три рубля сорок три копейки ", CurrencyToWordInterpreter.convert(oneMillion12Thousand3Rub43Kop = 1012003.43));
+    }
+
+    @Test
+    public void translateNegativeNumberToRusCurrencyWord() {
+        assertEquals("минус два рубля ноль копеек", CurrencyToWordInterpreter.convert(-2.0));
     }
 }

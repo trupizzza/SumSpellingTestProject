@@ -64,6 +64,15 @@ public class SumSpellingTest {
 
     @Test
     public void translateZeroRubZeroKopToCurrencyWord() {
-        assertEquals("ноль рублей ноль копеек", CurrencyToWordInterpreter.convert(0.0D));
+        assertEquals("ноль рублей ноль копеек ", CurrencyToWordInterpreter.convert(0.0D));
+    }
+    @Test
+    public void translateSomeNumberToRusCurrencyWord() {
+        assertEquals("пятьдесят один рубль сорок одна копейка ", CurrencyToWordInterpreter.convert(51.41D));
+    }
+    @Test
+    public void Comon200ThousandsToRus()
+    {
+        assertEquals("двести две тысячи семьсот одиннадцать рублей восемьдесят две копейки", CurrencyToWordInterpreter.convert(202711.82D));
     }
 }

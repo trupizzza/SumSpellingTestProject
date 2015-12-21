@@ -20,58 +20,51 @@ public class CurrencyToWordInterpreter {
         int intNumberLength;
         int groupCount;
 
-        String[] separatedNumberGroupsStrings;
-        String numberString = number.toString();
+        String separatedNumberGroup;
         String intNumberString = Integer.toString(number.intValue());
         intNumberLength = Integer.toString(number.intValue()).length();
-        String fractionalString = String.valueOf(Integer.parseInt(numberString.split("\\.")[1]));
+        String fractionalString = String.valueOf(Integer.parseInt(number.toString().split("\\.")[1]));
 
         String fractionalResultString = checkSecondNumber(fractionalString, 0);
-
+        if (number.intValue() == 0) {
+            completeNumberWordResult =
+        }
 
         if (intNumberLength % 3 == 0) {
             groupCount = intNumberLength / 3;
         } else {
             groupCount = (intNumberLength / 3) + 1;
         }
-        separatedNumberGroupsStrings = new String[groupCount];
-
         for (int i = 0; i < groupCount; i++) {
             if (intNumberString.length() <= 3) {
-                separatedNumberGroupsStrings[i] = intNumberString;
+                separatedNumberGroup = intNumberString;
             } else {
-                separatedNumberGroupsStrings[i] = intNumberString.substring(intNumberString.length() - 3, intNumberString.length());
+                separatedNumberGroup = intNumberString.substring(intNumberString.length() - 3, intNumberString.length());
                 intNumberString = intNumberString.substring(0, intNumberString.length() - 3);
             }
-        }
-        for (int i = 0; i < groupCount; i++) {
-            switch (separatedNumberGroupsStrings[i].length()) {
+            switch (separatedNumberGroup.length()) {
                 case 1:
-
-                    completeNumberWordResult = checkFirstNumber(separatedNumberGroupsStrings[i], i + 1) + completeNumberWordResult;
+                    completeNumberWordResult = retrieveRightNumberAsWord(separatedNumberGroup, i + 1) + completeNumberWordResult;
                     break;
                 case 2:
-                    completeNumberWordResult = checkSecondNumber(separatedNumberGroupsStrings[i], i + 1) + completeNumberWordResult;
+                    completeNumberWordResult = checkSecondNumber(separatedNumberGroup, i + 1) + completeNumberWordResult;
                     break;
                 case 3:
-                    completeNumberWordResult = checkFirstNumber(separatedNumberGroupsStrings[i], i + 1) +
-                            checkSecondNumber(separatedNumberGroupsStrings[i].substring(1), i + 1) + completeNumberWordResult;
+                    completeNumberWordResult = retrieveRightNumberAsWord(separatedNumberGroup, i + 1) +
+                            checkSecondNumber(separatedNumberGroup.substring(1), i + 1) + completeNumberWordResult;
                     break;
                 default:
                     return "";
             }
-            if (i == separatedNumberGroupsStrings.length - 1) {
-                completeNumberWordResult += fractionalResultString;
-            }
-
         }
+        completeNumberWordResult += fractionalResultString;
         System.out.println(completeNumberWordResult);
         return completeNumberWordResult;
     }
 
-    private static String checkFirstNumber(String numberString, int currentGroupCount) {
+    private static String retrieveRightNumberAsWord(String numberString, int currentGroupCount) {
         String resultingWord = "";
-        if (numberString.length() > 2) {
+        if (numberString.length() == 3) {
             switch (numberString.charAt(0)) {
                 case '1':
                     resultingWord = "сто ";
@@ -184,7 +177,7 @@ public class CurrencyToWordInterpreter {
                     resultingWord = "ноль " + triadDefinition[currentGroupCount] + triadSuffix[currentGroupCount][suffixNumber];
                     return resultingWord;
                 }
-                resultingWord = checkFirstNumber(numberString.substring(1), currentGroupCount);
+                resultingWord = retrieveRightNumberAsWord(numberString.substring(1), currentGroupCount);
                 return resultingWord;
             }
             switch (integerNumber) {
@@ -256,7 +249,7 @@ public class CurrencyToWordInterpreter {
                 default:
                     return "Translation error!";
             }
-            resultingWord += checkFirstNumber(numberString.substring(1), currentGroupCount);
+            resultingWord += retrieveRightNumberAsWord(numberString.substring(1), currentGroupCount);
         }
 
         return resultingWord;

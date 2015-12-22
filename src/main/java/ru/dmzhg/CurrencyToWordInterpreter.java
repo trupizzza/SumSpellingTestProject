@@ -27,7 +27,8 @@ public class CurrencyToWordInterpreter {
 
         String fractionalResultString = checkSecondNumber(fractionalString, 0);
         if (number.intValue() == 0) {
-            completeNumberWordResult =
+            completeNumberWordResult = "ноль рублей " + fractionalResultString;
+            return completeNumberWordResult;
         }
 
         if (intNumberLength % 3 == 0) {
@@ -253,5 +254,143 @@ public class CurrencyToWordInterpreter {
         }
 
         return resultingWord;
+    }
+
+    private String flipString(Double number) {
+        char[] numbersCharArray = number.toString().toCharArray();
+        char[] flippedArray = new char[numbersCharArray.length];
+        for (int k = numbersCharArray.length - 1, i = 0; k >= 0; k--, i++) {
+            flippedArray[i] = numbersCharArray[k];
+        }
+
+        return new String(flippedArray);
+    }
+
+    public String convert1(String numberStringToBeConverted) {
+        String result = "";
+        int triadSymbolPosition = 0;
+        int groupCount = 0;
+        for (int i = 0; i < numberStringToBeConverted.length() - 1; i++) {
+            if (triadSymbolPosition == 3) {
+                result += triadDefinition[groupCount] + triadSuffix[groupCount][suffixNumber];
+            }
+            switch (numberStringToBeConverted.charAt(i)) {
+                case '0':
+                    triadSymbolPosition++;
+                    break;
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                    triadSymbolPosition++;
+                    result = convertSymbolToWord() + result;
+                    break;
+                case '.':
+                    result = triadDefinition[groupCount] + triadSuffix[groupCount][suffixNumber] + result;
+                    groupCount++;
+                    triadSymbolPosition = 0;
+            }
+        }
+        if (triadSymbolPosition != 0) {
+            return result + triadDefinition[groupCount++] + triadSuffix[groupCount++][suffixNumber];
+        }
+        return result;
+    }
+
+    private String convertSymbolToWord(int symbolPosition, int groupNumber, String symbol) {
+        String result = "";
+        if (symbolPosition == 3) {
+            switch (symbol.charAt(0)) {
+                case '1':
+                    result = "сто ";
+                    break;
+                case '2':
+                    result = "двести ";
+                    break;
+                case '3':
+                    result = "триста ";
+                    break;
+                case '4':
+                    result = "четыреста ";
+                    break;
+                case '5':
+                    result = "пятьсот ";
+                    break;
+                case '6':
+                    result = "шестьсот ";
+                    break;
+                case '7':
+                    result = "семьсот ";
+                    break;
+                case '8':
+                    result = "восемьсот ";
+                    break;
+                case '9':
+                    result = "девятьсот ";
+            }
+            return result;
+        }
+        if (symbolPosition == 2) {
+
+            switch (symbol.charAt(0)) {
+                case '1':
+                    if (groupNumber == 0) {
+                        result = "одна ";
+                        break;
+                    }
+                    if (groupNumber == 2) {
+                        result = "одна ";
+                        break;
+                    } else {
+                        result = "один ";
+                        break;
+                    }
+
+                case '2':
+                    if (groupNumber == 0) {
+                        result = "две ";
+                        break;
+                    }
+                    if (groupNumber == 2) {
+                        result = "две ";
+                        break;
+                    } else {
+                        result = "два ";
+                        break;
+                    }
+                case '3':
+                    result = "три ";
+                    break;
+                case '4':
+                    result = "четыре ";
+                    break;
+                case '5':
+                    result = "пять ";
+                    break;
+                case '6':
+                    result = "шесть ";
+                    break;
+                case '7':
+                    result = "семь ";
+                    break;
+                case '8':
+                    result = "восемь ";
+                    break;
+                case '9':
+                    result = "девять ";
+                    break;
+                case '0':
+                    result = "";
+                    break;
+                default:
+                    return "Translation error!";
+            }
+        }
+        return result;
     }
 }

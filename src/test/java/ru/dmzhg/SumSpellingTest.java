@@ -81,4 +81,9 @@ public class SumSpellingTest {
     public void translateNegativeNumberToRusCurrencyWord() {
         assertEquals("минус два рубля ноль копеек", CurrencyToWordInterpreter.convert(-2.0));
     }
+
+    @Test
+    public void smallTestForStringReverse() {
+        assertEquals("95.4321", CurrencyToWordInterpreter.retrieveSymbolAsWord(1234.59));
+    }
 }
